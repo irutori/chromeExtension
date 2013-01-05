@@ -1,25 +1,22 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        min-width:357px;
-        overflow-x:hidden;
-      }
-
-      img {
-        margin:5px;
-        border:2px solid black;
-        vertical-align:middle;
-        width:75px;
-        height:75px;
-      }
-    </style>
-
-    <!-- JavaScript and HTML must be in separate files for security. -->
-    <script src="popup.js"></script>
-  </head>
-  <body>
-  </body>
+<head>
+	<title>popup</title>
+	<style>
+		body{
+			min-width:150px;
+		}
+	</style>
+<!-- style= "visibility:hidden"-->
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="popup.js"></script>
+</head>
+<body>
+	<fieldset>
+		<input type="radio" name="select" value="1">test
+		<input type="radio" name="select" value="2">test
+		<input type="radio" name="select" value="3">test
+	</fieldset>
+	<button id="hoge">hoge</button>
+</body>
 </html>

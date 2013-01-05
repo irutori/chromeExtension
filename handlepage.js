@@ -1,5 +1,5 @@
-hoge();
+//hoge();
 
 function hoge(){
-	alert();
+	alert("");
 }

@@ -1,3 +1,26 @@
+$(function() {
+    $("#hoge").click(function(){
+        getselect();
+        });
+    });
+	
+function getselect(){
+var str="";
+var get = document.getElementsByName('select');
+	for(i = 0;i<get.length;i++){
+		if(get[i].checked){
+			str = get[i].value;
+		}
+	}
+	if(str==""){
+		alert("select please!");
+	}else{
+		//syori
+		alert(str);
+	}
+}	
+	
+/*
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,3 +58,4 @@ function constructImageURL(photo) {
       "_" + photo.getAttribute("secret") +
       "_s.jpg";
 }
+*/
