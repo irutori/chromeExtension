@@ -4,9 +4,10 @@ chrome.extension.onRequest.addListener(
                 "from a content script:" + sender.tab.url :
                 "from the extension");
     if (request.pageurl == "hello"){
-		console.log(request.greeting);
-		sendResponse({farewell: "goodbye"});
+		//console.log(request.greeting);
+		sendResponse({state: "goodbye"});
     }else
-      sendResponse({}); // snub them.
+		console.log(request.pageurl);
+		sendResponse({}); // snub them.
   }
 );
