@@ -1,5 +1,5 @@
 $(function() {
-    $("#hoge").click(function(){
+    $("#pursue").click(function(){
         getselect();
         });
     });
