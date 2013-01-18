@@ -1,6 +1,6 @@
 {
 	"name": "My First Extension",
-	"version": "1.1",
+	"version": "1.2",
 	"manifest_version": 2,
 	"description": "for idolmaster on chrome",
 	"background":{"page": "background.html"},

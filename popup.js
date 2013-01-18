@@ -15,7 +15,5 @@ var get = document.getElementsByName('select');
 	if(str==""){
 		alert("select please!");
 	}else{
-		//syori
-		alert(str);
 	}
 }
