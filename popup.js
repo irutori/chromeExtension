@@ -1,3 +1,5 @@
+/*not use*/
+
 $(function() {
     $("#pursue").click(function(){
         getselect();

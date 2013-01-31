@@ -1,104 +1,111 @@
-﻿var state="";
+﻿var url = location.href;
+var state = "";
+var next = "";
+var list = "";
 var count = 0;
-var url = location.href;
-var dojo = "";
 
-chrome.extension.sendRequest({pageurl: url}, function(response) {
-	state = response.state;
-	if(response.action == "quest"){
-		questAction();
-	}else if(response.action == "battle"){
-		dojo = response.dojo;
-		battleAction();
-	}else if(response.action == "cheer"){
-		if(count < 501){
-			cheerAction();
-		}
+var port = chrome.extension.connect({name: "connect"});
+port.postMessage({pageurl: url});
+
+port.onMessage.addListener(function(msg) {
+	if (msg.action == "correct"){
+		state = msg.factor;
+		next = msg.next;
+		actionCorrect();
+	}else if(msg.action == "cheer"){
+		state = msg.factor;
+		next = msg.next;
+		actionCheer();
+	}else if (msg.action == "getlist"){
+		getURL();
+		port.postMessage({list: list});
 	}
 });
 
-function questAction(){
-	setInterval("quest()",1000);
+function actionCorrect(){
+	setInterval("stayCorrect()",2000);
 }
 
-function battleAction(){
-	setInterval("battle()",1000);
-}
-
-function cheerAction(){
-	setInterval("cheer()",1000);
-}
-
-function quest(){
+function stayCorrect(){
 	if(count == 0){
 		count++;
-	}else if(count == 1){
-	
+	}else if(count==1){
+		correct();
+		count++;
 	}
 }
 
-function battle() {
+function correct(){
+	if(state == "waitJump"){
+		jump(next);
+	}else if(state == "waitMorebutton"){
+		selectMorebutton();
+	}else if(state == "waitGetlist"){
+		getURL();
+	}else if(state == "toMypage"){
+		toMypage();
+	}
+}
+
+function actionCheer(){
+	setInterval("stayCheer()",1000);
+}
+
+function stayCheer(){
 	if(count == 0){
 		count++;
-	}else if(count == 1){
-		if(state == "myPage"){
-			toDojo(dojo);
-		}else if(state == "userPage"){
-			selectBattle();
-		}else if(state == "checkPage"){
-			startBattle();
-		}else{
-			toMypage();
-		}
+	}else if(count==1){
+		cheer();
+		count++;
 	}
 }
 
 function cheer() {
-	if(count == 0){
-		count++;
-	}else if(count == 1){
-		if(state == "nextUser"){
-			nextUser();
-		}else if(state == "userPage"){
-			selectCheer();
-		}else if(state == "checkPage"){
-			cheerSubmit();
-		}else if(state == "submitPage"){
-			cheerSubmit();
-		}
+	if(state == "waitNextUser"){
+		nextUser(next);
+	}else if(state == "waitSelectCheer"){
+		selectCheer();
+	}else if(state == "waitSend"){
+		cheerSubmit();
+	}else if(state == "waitSubmit"){
+		cheerSubmit();
+	}else if(state == "toMypage"){
+		toMypage();
 	}
+}
+
+/* correct */
+function jump(url){
+	location.href = url;
+}
+
+function selectMorebutton(){
+	$("a[href*='cheers_list']")[0].click();
+}
+
+function getURL(){
+	list = "";
+	var dom = $("a[href*='profile']");
+	for(var i=0;i< 10;i++){
+		list += dom[i].href.substring(101,110) + ",";
+	}
+	console.log("append:"+list);
+}
+
+/* cheer */
+function nextUser(url){
+	location.href = url;
+}
+
+function selectCheer(){
+	$("a[href*='cheer']")[0].click();
+}
+
+function cheerSubmit(){
+	$("input[type*='submit']")[0].click();
 }
 
 /* set users mypage */
 function toMypage(){
 	location.href="http://sp.pf.mbga.jp/12008305/?guid=ON&url=http%3A%2F%2F125.6.169.35%2Fidolmaster%2Fmypage%3Frnd%3D221193360";
-}
-
-function nextUser(/*url*/){
-	//location.href = url;
-	$("a[href*='profile']")[2].click();
-}
-
-/* cheer-1 */
-function selectCheer(){
-	$("a[href*='cheer']")[0].click();
-}
-
-/* cheer-2,5 */
-function cheerSubmit(){
-	$("input[type*='submit']")[0].click();
-}
-
-function toDojo(url){
-	location.href = url;
-}
-
-/* battle-1 */
-function selectBattle(){
-	$("a[href*='battle_check']")[0].click();
-}
-
-/* battle-2 */
-function startBattle(){
-	$("input[type*='submit']")[0].click();
 }

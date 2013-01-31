@@ -1,13 +1,9 @@
 {
-	"name": "My First Extension",
-	"version": "1.2",
+	"name": "auto cheer",
+	"version": "2.0",
 	"manifest_version": 2,
-	"description": "for idolmaster on chrome",
+	"description": "auto cheer",
 	"background":{"page": "background.html"},
-	"browser_action": {
-		"default_icon": "icon.png",
-		"default_popup": "popup.html"
-	},
 	"permissions": [
 		"tabs"
 	],
