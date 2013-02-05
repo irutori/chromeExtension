@@ -62,7 +62,7 @@ function stayCheer(){
 
 function cheer() {
 	if(state == "waitNextUser"){
-		nextUser(next);
+		jump(next);
 	}else if(state == "waitSelectCheer"){
 		selectCheer();
 	}else if(state == "waitSend"){
@@ -93,10 +93,6 @@ function getURL(){
 }
 
 /* cheer */
-function nextUser(url){
-	location.href = url;
-}
-
 function selectCheer(){
 	$("a[href*='cheer']")[0].click();
 }
@@ -105,7 +101,6 @@ function cheerSubmit(){
 	$("input[type*='submit']")[0].click();
 }
 
-/* set users mypage */
 function toMypage(){
-	location.href="http://sp.pf.mbga.jp/12008305/?guid=ON&url=http%3A%2F%2F125.6.169.35%2Fidolmaster%2Fmypage%3Frnd%3D221193360";
+	location.href="http://sp.pf.mbga.jp/12008305/?guid=ON&url=http%3A%2F%2F125.6.169.35%2Fidolmaster%2Fmypage";
 }

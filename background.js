@@ -122,13 +122,9 @@ function makeURL(){
 
 function getID(str){
 	if(str.match("%$")){
-		return str.substring(0,str.length-1);
+		return str.substring(0,8);
 	}else{
-		if(str.length>6){
-			getID(str.substring(0,str.length-1));
-		}else{
-			return "71060468";
-		}
+		return str.substring(0,7);
 	}
 	
 }
