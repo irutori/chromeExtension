@@ -23,7 +23,7 @@ port.onMessage.addListener(function(msg) {
 });
 
 function actionCorrect(){
-	setInterval("stayCorrect()",2000);
+	setInterval("stayCorrect()",750);
 }
 
 function stayCorrect(){
@@ -48,7 +48,7 @@ function correct(){
 }
 
 function actionCheer(){
-	setInterval("stayCheer()",1000);
+	setInterval("stayCheer()",750);
 }
 
 function stayCheer(){

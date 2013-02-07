@@ -121,10 +121,5 @@ function makeURL(){
 	}
 
 function getID(str){
-	if(str.match("%$")){
-		return str.substring(0,8);
-	}else{
-		return str.substring(0,7);
-	}
-	
+	return str.match(/[0-9]+/)[0];
 }
