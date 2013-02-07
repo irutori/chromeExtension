@@ -6,31 +6,41 @@ var dojoId = [9803820,64249408,66717238,58367118,61410596,38335324,60785960,6534
 var dojoTop = 0;
 var idList = [];
 var listTop = 0;
+var flag = false;
+var myport = null;
 
 chrome.extension.onConnect.addListener(function(port) {
 	port.onMessage.addListener(function(msg) {
-		if(msg.list){
-			makeIdList(msg.list);
-			console.log(idList.length);
-			if(idList.length > 250){
-				act = "cheer";
-				job = "nextUser";
-				nextId = getNextUser();
-				var i=0
-				while(idList[i]){
-					console.log(idList[i]);
-					i++;
+		myport = port;
+		if(flag){
+			if(msg.list){
+				makeIdList(msg.list);
+				console.log(idList.length);
+				if(idList.length > 250){
+					act = "cheer";
+					job = "nextUser";
+					nextId = getNextUser();
+				}else{
+					job = "nextList";
+					nextId = getNextDojo();
 				}
+			port.postMessage({job: job,id: nextId});
 			}else{
-				job = "nextList";
-				nextId = getNextDojo();
+				checkURL(msg.pageurl);
+				port.postMessage({job: job,id: nextId});
 			}
-			port.postMessage({job: job,id: nextId});
-		}else{
-			checkURL(msg.pageurl);
-			port.postMessage({job: job,id: nextId});
 		}
 	});
+});
+
+chrome.browserAction.onClicked.addListener(function(tab){
+	if(!flag){
+		flag = true;
+	}else{
+		flag = false;
+	}
+	
+	myport.postMessage({job: "goHome",id: ""});
 });
 
 function checkURL(pageurl){
@@ -47,17 +57,19 @@ function checkURL(pageurl){
 		nextId = "";
 	}else if(pageurl.match('cheer%2Findex')){
 		job = "cheer";
+		nextId = "";
 	}else if(pageurl.match('comment_check')){
 		job = "cheer";
-	}else if(pageurl.match('profile')){
-		job = "nextUser";
-		nextId = getNextUser();
+		nextId = "";
 	}else if(pageurl.match('over_cheer_count')){
 		job = "goHome";
 		act = "end";
 	}else if(pageurl.match('error')){
 		console.log('error');
 		job = "goHome";
+	}else{
+		job = "nextUser";
+		nextId = getNextUser();
 	}
 }
 
@@ -73,7 +85,7 @@ function getNextDojo(){
 
 function getNextUser(){
 	var id = idList[listTop];
-	if(listTop < idList.length){
+	if(listTop < idList.length - 1){
 		listTop++;
 	}else{
 		job = "goHome";

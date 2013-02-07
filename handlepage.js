@@ -37,7 +37,7 @@ function cheerSubmit(){
 }
 
 function delay(){
-	setTimeout("callMethod()",750);
+	setTimeout("callMethod()",1000);
 }
 
 function callMethod(){
