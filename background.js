@@ -1,11 +1,12 @@
 var act = "correct";
-var nextId = "";
 var job = "";
+var nextId = "";
 
 var dojoId = [9803820,64249408,66717238,58367118,61410596,38335324,60785960,65349258,61332207,60796160,66215638,57137423,60722314,56678005,66506554,59881437,62897418,61168865,66176833,37543223,63267032,59647843,60003042,61863374,16064520,7054900,9013840,15586190,54874033,59466093,61075637,58908513,63946801,62056410,60071414,59275512,46042298,62187020];
 var dojoTop = 0;
 var idList = [];
 var listTop = 0;
+
 var flag = false;
 var myport = null;
 
@@ -15,15 +16,7 @@ chrome.extension.onConnect.addListener(function(port) {
 		if(flag){
 			if(msg.list){
 				makeIdList(msg.list);
-				console.log(idList.length);
-				if(idList.length > 250){
-					act = "cheer";
-					job = "nextUser";
-					nextId = getNextUser();
-				}else{
-					job = "nextList";
-					nextId = getNextDojo();
-				}
+				swichCheck();
 			port.postMessage({job: job,id: nextId});
 			}else{
 				checkURL(msg.pageurl);
@@ -39,37 +32,54 @@ chrome.browserAction.onClicked.addListener(function(tab){
 	}else{
 		flag = false;
 	}
-	
 	myport.postMessage({job: "goHome",id: ""});
 });
 
 function checkURL(pageurl){
+	nextId = "";
 	if(pageurl.match('mypage')){
-		if(act == "correct"){
-			job = "nextList";
-			nextId = getNextDojo();
-		}else if(act == "cheer"){
-			job = "nextUser"
-			nextId = getNextUser();
-		}
+		mypageBranch();
 	}else if(pageurl.match('cheers_list')){
 		job = "correct";
-		nextId = "";
 	}else if(pageurl.match('cheer%2Findex')){
 		job = "cheer";
-		nextId = "";
 	}else if(pageurl.match('comment_check')){
 		job = "cheer";
-		nextId = "";
 	}else if(pageurl.match('over_cheer_count')){
 		job = "goHome";
 		act = "end";
 	}else if(pageurl.match('error')){
-		console.log('error');
 		job = "goHome";
 	}else{
+		if(act == "end"){
+			job = "goHome";
+		}else{
+			job = "nextUser";
+			nextId = getNextUser();
+		}
+	}
+}
+
+function swichCheck(){
+	if(idList.length > 250){
+		act = "cheer";
 		job = "nextUser";
 		nextId = getNextUser();
+	}else{
+		job = "nextList";
+		nextId = getNextDojo();
+	}
+}
+
+function mypageBranch(){
+	if(act == "correct"){
+		job = "nextList";
+		nextId = getNextDojo();
+	}else if(act == "cheer"){
+		job = "nextUser"
+		nextId = getNextUser();
+	}else{
+		job = "";
 	}
 }
 
@@ -85,11 +95,10 @@ function getNextDojo(){
 
 function getNextUser(){
 	var id = idList[listTop];
-	if(listTop < idList.length - 1){
-		listTop++;
-	}else{
-		job = "goHome";
+	if(idList[listTop + 1]){
 		act = "end";
+	}else{
+		listTop++;
 	}
 	return id;
 }
