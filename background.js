@@ -96,9 +96,9 @@ function getNextDojo(){
 function getNextUser(){
 	var id = idList[listTop];
 	if(idList[listTop + 1]){
-		act = "end";
-	}else{
 		listTop++;
+	}else{
+		act = "end";
 	}
 	return id;
 }
